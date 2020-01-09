@@ -25,10 +25,16 @@ namespace Dramarr.Services.Scraper
             ConnectionString = connectionString;
             Timeout = timeout;
 
-            // todo
-            MATScraper = new Scrapers.MyAsianTv.Manager();
-            ESScraper = new Scrapers.EstrenosDoramas.Manager();
-            KSScraper = new Scrapers.Kshow.Manager();
+            var MATEpisodeUrl = $"https://myasiantv.to/drama/<dorama>/download/";
+            var MATAllShowsUrl = $"https://myasiantv.to/";
+            var MATLatestEpisodesUrl = $"https://myasiantv.to/";
+            MATScraper = new Scrapers.MyAsianTv.Manager(MATEpisodeUrl, MATAllShowsUrl, MATLatestEpisodesUrl);
+
+            var ESShowUrl = "https://www.estrenosdoramas.net/";
+            ESScraper = new Scrapers.EstrenosDoramas.Manager(ESShowUrl);
+
+            var KSShowUrl = "https://kshow.to/";
+            KSScraper = new Scrapers.Kshow.Manager(KSShowUrl);
         }
 
         public void Run() => TaskHelpers.Retry(Logic, Timeout);
