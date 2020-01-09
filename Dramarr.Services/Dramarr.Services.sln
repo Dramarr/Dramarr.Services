@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dramarr.Services.Checker", "Dramarr.Services.Checker\Dramarr.Services.Checker.csproj", "{9E6F173D-5604-405A-8330-399AC03407B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dramarr.Services.Checker", "Dramarr.Services.Checker\Dramarr.Services.Checker.csproj", "{9E6F173D-5604-405A-8330-399AC03407B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dramarr.Services.Downloader", "Dramarr.Services.Downloader\Dramarr.Services.Downloader.csproj", "{A46EFC29-7144-4AF6-8D90-FA46EB235800}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dramarr.Services.Downloader", "Dramarr.Services.Downloader\Dramarr.Services.Downloader.csproj", "{A46EFC29-7144-4AF6-8D90-FA46EB235800}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dramarr.Services.Enqueuer", "Dramarr.Services.Enqueuer\Dramarr.Services.Enqueuer.csproj", "{A20CFEEA-520C-482B-9D2F-CA707D1677D5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dramarr.Services.Scraper", "Dramarr.Services.Scraper\Dramarr.Services.Scraper.csproj", "{29BCCD37-D791-4E5F-A3A5-A73793E36DDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dramarr.Services.Enqueuer", "Dramarr.Services.Enqueuer\Dramarr.Services.Enqueuer.csproj", "{A20CFEEA-520C-482B-9D2F-CA707D1677D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{A20CFEEA-520C-482B-9D2F-CA707D1677D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A20CFEEA-520C-482B-9D2F-CA707D1677D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A20CFEEA-520C-482B-9D2F-CA707D1677D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{29BCCD37-D791-4E5F-A3A5-A73793E36DDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29BCCD37-D791-4E5F-A3A5-A73793E36DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29BCCD37-D791-4E5F-A3A5-A73793E36DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29BCCD37-D791-4E5F-A3A5-A73793E36DDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
