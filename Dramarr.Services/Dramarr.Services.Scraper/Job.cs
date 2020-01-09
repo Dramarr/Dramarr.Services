@@ -43,18 +43,8 @@ namespace Dramarr.Services.Scraper
             GetAllShows(Source.ESTRENOSDORAMAS)?.ForEach(x => allShows.Add(new Show(x)));
             GetAllShows(Source.KSHOW)?.ForEach(x => allShows.Add(new Show(x)));
 
-
             var finalList = allShows.Where(x => showsInDatabase.Exists(y => x.Url == y.Url)).ToList();
-
             showRepo.BulkCreate(finalList);
-
-            //foreach (var item in allShows)
-            //{
-            //    if (!showsInDatabase.Exists(x => x.Url == item.Url))
-            //    {
-            //        showRepo.Create(item);
-            //    }
-            //}
 
             return true;
         }
