@@ -49,7 +49,11 @@ namespace Dramarr.Services.Scraper
             GetAllShows(Source.ESTRENOSDORAMAS)?.ForEach(x => allShows.Add(new Show(x)));
             GetAllShows(Source.KSHOW)?.ForEach(x => allShows.Add(new Show(x)));
 
-            var finalList = allShows.Where(x => showsInDatabase.Exists(y => x.Url == y.Url)).ToList();
+            var finalList = allShows.Where(x => !showsInDatabase.Exists(y => x.Url == y.Url)).ToList();
+            var distinctAux = finalList
+                .GroupBy(x => x.Url)
+                .Select(x => x.First()).ToList();
+
             showRepo.BulkCreate(finalList);
 
             return true;
@@ -59,9 +63,9 @@ namespace Dramarr.Services.Scraper
         {
             return source switch
             {
-                Source.MYASIANTV => MATScraper.GetAllShows(),
-                Source.ESTRENOSDORAMAS => ESScraper.GetAllShows(),
-                Source.KSHOW => KSScraper.GetAllShows(),
+                Source.MYASIANTV => MATScraper.GetLatestShows(),
+                Source.ESTRENOSDORAMAS => ESScraper.GetLatestShows(),
+                Source.KSHOW => KSScraper.GetLatestShows(),
                 _ => null,
             };
         }
