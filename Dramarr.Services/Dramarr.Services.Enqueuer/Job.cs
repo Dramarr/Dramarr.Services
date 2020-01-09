@@ -15,17 +15,15 @@ namespace Dramarr.Services.Enqueuer
     {
         public string ConnectionString { get; set; }
         public TimeSpan Timeout { get; set; }
-        public string Path { get; set; }
 
         private Scrapers.MyAsianTv.Manager MATScraper;
         private Scrapers.EstrenosDoramas.Manager ESScraper;
         private Scrapers.Kshow.Manager KSScraper;
 
-        public Job(string connectionString, TimeSpan timeout, string path)
+        public Job(string connectionString, TimeSpan timeout)
         {
             ConnectionString = connectionString;
             Timeout = timeout;
-            Path = path;
 
             var MATEpisodeUrl = $"https://myasiantv.to/drama/<dorama>/download/";
             var MATAllShowsUrl = $"https://myasiantv.to/";

@@ -6,11 +6,33 @@ namespace Dramarr.Services.Tests
     {
         static void Main(string[] args)
         {
+            EnqueuerTest();
+        }
+
+        public static void ScraperTest()
+        {
+            var cs = "Data Source=.; Initial Catalog=Dramarr; User id=sa; Password=sa;";
+
+            var scrapper = new Scraper.Job(cs, TimeSpan.FromMinutes(5));
+            scrapper.Run();
+        }
+
+        public static void EnqueuerTest()
+        {
+            var cs = "Data Source=.; Initial Catalog=Dramarr; User id=sa; Password=sa;";
+
+            var enqueuer = new Enqueuer.Job(cs, TimeSpan.FromMinutes(10));
+            enqueuer.Run();
+        }
+
+
+        public static void DownloaderTest()
+        {
             var cs = "Data Source=.; Initial Catalog=Dramarr; User id=sa; Password=sa;";
             var path = @"D:\Downloads\Dramarr";
 
-            var scrapper = new Scraper.Job(cs, TimeSpan.FromMinutes(5), path);
-            scrapper.Run();
+            var enqueuer = new Downloader.Job(cs, TimeSpan.FromMinutes(10), path);
+            enqueuer.Run();
         }
     }
 }

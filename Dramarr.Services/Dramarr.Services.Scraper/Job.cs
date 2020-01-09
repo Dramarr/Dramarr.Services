@@ -20,7 +20,7 @@ namespace Dramarr.Services.Scraper
         private Scrapers.EstrenosDoramas.Manager ESScraper;
         private Scrapers.Kshow.Manager KSScraper;
 
-        public Job(string connectionString, TimeSpan timeout, string path)
+        public Job(string connectionString, TimeSpan timeout)
         {
             ConnectionString = connectionString;
             Timeout = timeout;

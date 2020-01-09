@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dramarr.Services.Checker\Dramarr.Services.Checker.csproj" />
+    <ProjectReference Include="..\Dramarr.Services.Downloader\Dramarr.Services.Downloader.csproj" />
+    <ProjectReference Include="..\Dramarr.Services.Enqueuer\Dramarr.Services.Enqueuer.csproj" />
     <ProjectReference Include="..\Dramarr.Services.Scraper\Dramarr.Services.Scraper.csproj" />
   </ItemGroup>
 
