@@ -46,43 +46,47 @@ namespace Dramarr.Services.Scraper
 
         public bool Logic()
         {
+            var logs = new List<Log>();
+
             try
             {
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Starting Scraper logic", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, "Starting Scraper logic", null));
 
                 var showRepo = new ShowRepository(ConnectionString);
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting shows in database", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting shows in database", null));
                 var showsInDatabase = showRepo.Select();
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {showsInDatabase.Count} shows", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {showsInDatabase.Count} shows", null));
 
                 var allShows = new List<Show>();
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Getting shows from sources", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Getting shows from sources", null));
 
                 GetAllShows(Source.MYASIANTV)?.ForEach(x => allShows.Add(new Show(x)));
                 GetAllShows(Source.ESTRENOSDORAMAS)?.ForEach(x => allShows.Add(new Show(x)));
                 GetAllShows(Source.KSHOW)?.ForEach(x => allShows.Add(new Show(x)));
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {allShows.Count} counts from sources", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {allShows.Count} counts from sources", null));
 
                 var finalList = allShows.Where(x => !showsInDatabase.Exists(y => x.Url == y.Url)).ToList();
                 var distinctAux = finalList
                     .GroupBy(x => x.Url)
                     .Select(x => x.First()).ToList();
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"{distinctAux.Count} shows will be added", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"{distinctAux.Count} shows will be added", null));
 
                 showRepo.BulkCreate(finalList);
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Shows added successfully", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Shows added successfully", null));
             }
             catch (Exception e)
             {
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, e.Message, e.StackTrace));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, e.Message, e.StackTrace));
             }
 
-            LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Finished Scraper logic", null));
+            logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, "Finished Scraper logic", null));
+
+            LogRepository.Create(logs);
 
             return true;
         }

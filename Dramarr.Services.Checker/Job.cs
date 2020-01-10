@@ -83,7 +83,9 @@ namespace Dramarr.Services.Checker
                 logs.Add(new Log(Core.Enums.LogHelpers.LogType.ERROR, e.Message, e.StackTrace));
             }
 
-            LogRepository.
+            logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, "Finished Checker logic", null));
+
+            LogRepository.Create(logs);
 
             return true;
         }

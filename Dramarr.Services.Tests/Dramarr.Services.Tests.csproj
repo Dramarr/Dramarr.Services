@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dramarr.Scrapers" Version="1.0.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Dramarr.Services.Checker\Dramarr.Services.Checker.csproj" />
     <ProjectReference Include="..\Dramarr.Services.Downloader\Dramarr.Services.Downloader.csproj" />
     <ProjectReference Include="..\Dramarr.Services.Enqueuer\Dramarr.Services.Enqueuer.csproj" />

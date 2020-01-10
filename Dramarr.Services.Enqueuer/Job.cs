@@ -19,7 +19,7 @@ namespace Dramarr.Services.Enqueuer
         private Scrapers.MyAsianTv.Manager MATScraper;
         private Scrapers.EstrenosDoramas.Manager ESScraper;
         private Scrapers.Kshow.Manager KSScraper;
-    private LogRepository LogRepository;
+        private LogRepository LogRepository;
 
         public Job(string connectionString, TimeSpan timeout)
         {
@@ -44,49 +44,51 @@ namespace Dramarr.Services.Enqueuer
 
         public bool Logic()
         {
+            var logs = new List<Log>();
+
             try
             {
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Starting Enqueuer logic", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, "Starting Enqueuer logic", null));
 
                 var showRepo = new ShowRepository(ConnectionString);
                 var episodeRepo = new EpisodeRepository(ConnectionString);
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Getting shows from database", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Getting shows from database", null));
                 var showsInDatabase = showRepo.Select().Where(x => x.Download ?? true).ToList();
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {showsInDatabase.Count} shows in database", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {showsInDatabase.Count} shows in database", null));
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Looping through shows", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, "Looping through shows", null));
                 foreach (var show in showsInDatabase)
                 {
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Checking {show.Title}", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Checking {show.Title}", null));
 
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Getting episodes in database of show: {show.Title}", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Getting episodes in database of show: {show.Title}", null));
                     var episodesInDatabase = episodeRepo.Select().Where(x => x.ShowId == show.Id).ToList();
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {episodesInDatabase.Count} episodes in database of show: {show.Title}", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {episodesInDatabase.Count} episodes in database of show: {show.Title}", null));
 
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Getting episodes of show: {show.Title} that status is not downloaded", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Getting episodes of show: {show.Title} that status is not downloaded", null));
                     var episodesByShow = episodesInDatabase.Where(x => x.Status == EpisodeStatus.UNKNOWN || x.Status == EpisodeStatus.FAILED && x.Status != EpisodeStatus.DOWNLOADED).ToList();
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {episodesByShow} episodes in database of show: {show.Title}", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {episodesByShow} episodes in database of show: {show.Title}", null));
 
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Getting episodes of show: {show.Title} in sources", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Getting episodes of show: {show.Title} in sources", null));
                     var newepisodes = GetEpisodesBySource(episodesByShow, show);
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {newepisodes.Count} episodes of show: {show.Title} in sources", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {newepisodes.Count} episodes of show: {show.Title} in sources", null));
 
 
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Looping through {show.Title} episodes", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Looping through {show.Title} episodes", null));
                     foreach (var item in newepisodes)
                     {
-                        LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Checking {item.Filename}", null));
+                        logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Checking {item.Filename}", null));
 
-                        LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Checking if episode exists", null));
+                        logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Checking if episode exists", null));
                         var ep = episodesByShow.SingleOrDefault(x => x.Filename == item.Filename);
 
-                        LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Checking if episode exists as scraped or downloaded", null));
+                        logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Checking if episode exists as scraped or downloaded", null));
                         var existsAsScraperOrDownloaded = episodesInDatabase.SingleOrDefault(x => x.Filename == item.Filename && (x.Status == EpisodeStatus.SCRAPED || x.Status == EpisodeStatus.DOWNLOADED));
 
                         if (existsAsScraperOrDownloaded != null)
                         {
-                            LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Episode already downloaded", null));
+                            logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Episode already downloaded", null));
                             continue;
                         }
 
@@ -94,14 +96,14 @@ namespace Dramarr.Services.Enqueuer
                         {
                             if (item.Status != ep.Status && ep.Status != EpisodeStatus.DOWNLOADED)
                             {
-                                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Episode updated to download", null));
+                                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Episode updated to download", null));
                                 episodeRepo.Update(item);
                                 showRepo.Update(show);
                             }
                         }
                         else
                         {
-                            LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Episode added to download queue", null));
+                            logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Episode added to download queue", null));
                             episodeRepo.Create(item);
                             showRepo.Update(show);
                         }
@@ -110,10 +112,12 @@ namespace Dramarr.Services.Enqueuer
             }
             catch (Exception e)
             {
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, e.Message, e.StackTrace));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, e.Message, e.StackTrace));
             }
 
-            LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Finished Enqueuer logic", null));
+            logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, "Finished Enqueuer logic", null));
+
+            LogRepository.Create(logs);
 
             return true;
         }
