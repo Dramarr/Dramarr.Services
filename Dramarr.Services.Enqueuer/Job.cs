@@ -96,7 +96,7 @@ namespace Dramarr.Services.Enqueuer
                         {
                             if (item.Status != ep.Status && ep.Status != EpisodeStatus.DOWNLOADED)
                             {
-                                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Episode updated to download", null));
+                                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Episode type updated to download", null));
                                 episodeRepo.Update(item);
                                 showRepo.Update(show);
                             }

@@ -17,6 +17,7 @@ namespace Dramarr.Services.Checker
 
         private Scrapers.MyAsianTv.Manager MATScraper;
         private Scrapers.EstrenosDoramas.Manager ESScraper;
+        private Scrapers.Kshow.Manager KSScraper;
         private LogRepository LogRepository;
 
         public Job(string connectionString, TimeSpan timeout)
@@ -31,6 +32,9 @@ namespace Dramarr.Services.Checker
 
             var ESShowUrl = "https://www.estrenosdoramas.net/";
             ESScraper = new Scrapers.EstrenosDoramas.Manager(ESShowUrl);
+
+            var KSShowUrl = "https://kshow.to/";
+            KSScraper = new Scrapers.Kshow.Manager(KSShowUrl);
 
             LogRepository = new LogRepository(ConnectionString);
         }
@@ -49,7 +53,7 @@ namespace Dramarr.Services.Checker
                 var episodeRepo = new EpisodeRepository(ConnectionString);
 
                 logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting enabled shows in database", null));
-                var showsInDatabase = showRepo.Select().Where(x => x.Enabled == true).ToList();
+                var showsInDatabase = showRepo.Select().Where(x => x.Enabled == true && x.Download == true).ToList();
                 logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {showsInDatabase.Count} shows in database", null));
 
                 logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting episodes in database", null));
@@ -76,6 +80,10 @@ namespace Dramarr.Services.Checker
                         show.Enabled = false;
                         showRepo.Update(show);
                     }
+                    else
+                    {
+                        logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"{show.Title} is still in progres", null));
+                    }
                 }
             }
             catch (Exception e)
@@ -96,6 +104,7 @@ namespace Dramarr.Services.Checker
             {
                 Source.MYASIANTV => MATScraper.GetStatus(url),
                 Source.ESTRENOSDORAMAS => ESScraper.GetStatus(url),
+                Source.KSHOW => KSScraper.GetStatus(url),
                 _ => null,
             };
         }
