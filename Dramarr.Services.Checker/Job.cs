@@ -39,38 +39,40 @@ namespace Dramarr.Services.Checker
 
         public bool Logic()
         {
+            var logs = new List<Log>();
+
             try
             {
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Starting Checker logic", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, "Starting Checker logic", null));
 
                 var showRepo = new ShowRepository(ConnectionString);
                 var episodeRepo = new EpisodeRepository(ConnectionString);
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting enabled shows in database", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting enabled shows in database", null));
                 var showsInDatabase = showRepo.Select().Where(x => x.Enabled == true).ToList();
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {showsInDatabase.Count} shows in database", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {showsInDatabase.Count} shows in database", null));
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting episodes in database", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting episodes in database", null));
                 var episodesInDatabase = episodeRepo.Select();
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {episodesInDatabase.Count} episodes in database", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {episodesInDatabase.Count} episodes in database", null));
 
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Looping through shows", null));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, "Looping through shows", null));
                 foreach (var show in showsInDatabase)
                 {
                     // Get total episodes and status
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting show data from source", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting show data from source", null));
                     var status = GetStatus(show.Source, show.Url);
 
                     // Check if current amount of episodes == total episodes and status is downloaded
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting episodes downloaded", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting episodes downloaded", null));
                     var episodesByShow = episodesInDatabase.Where(x => x.ShowId == show.Id && x.Status == EpisodeStatus.DOWNLOADED).ToList();
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {episodesByShow} episodes downloaded", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {episodesByShow} episodes downloaded", null));
 
                     // if yes then disable drama -> Enabled = false
-                    LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Checking if it has to be disabled", null));
+                    logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, "Checking if it has to be disabled", null));
                     if (episodesByShow.Count == status.Item1 && status.Item2)
                     {
-                        LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Disabling show {show.Title}", null));
+                        logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Disabling show {show.Title}", null));
                         show.Enabled = false;
                         showRepo.Update(show);
                     }
@@ -78,8 +80,10 @@ namespace Dramarr.Services.Checker
             }
             catch (Exception e)
             {
-                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.ERROR, e.Message, e.StackTrace));
+                logs.Add(new Log(Core.Enums.LogHelpers.LogType.ERROR, e.Message, e.StackTrace));
             }
+
+            LogRepository.
 
             return true;
         }

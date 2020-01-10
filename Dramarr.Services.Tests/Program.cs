@@ -9,7 +9,7 @@ namespace Dramarr.Services.Tests
             //EnqueuerTest();
             //ScraperTest();
             //DownloaderTest();
-            //CheckerTest();
+            CheckerTest();
         }
 
         public static void ScraperTest()
