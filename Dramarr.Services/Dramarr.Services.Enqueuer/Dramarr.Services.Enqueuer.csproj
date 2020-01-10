@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dramarr.Scrapers" Version="1.0.0" />
+    <PackageReference Include="Dramarr.Scrapers" Version="1.0.0.4" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.0" />
   </ItemGroup>
 

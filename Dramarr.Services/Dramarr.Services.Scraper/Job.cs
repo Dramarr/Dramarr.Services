@@ -19,11 +19,14 @@ namespace Dramarr.Services.Scraper
         private Scrapers.MyAsianTv.Manager MATScraper;
         private Scrapers.EstrenosDoramas.Manager ESScraper;
         private Scrapers.Kshow.Manager KSScraper;
+        private LogRepository LogRepository;
 
         public Job(string connectionString, TimeSpan timeout)
         {
             ConnectionString = connectionString;
             Timeout = timeout;
+
+            LogRepository = new LogRepository(ConnectionString);
 
             var MATEpisodeUrl = $"https://myasiantv.to/drama/<dorama>/download/";
             var MATAllShowsUrl = $"https://myasiantv.to/";
@@ -35,26 +38,51 @@ namespace Dramarr.Services.Scraper
 
             var KSShowUrl = "https://kshow.to/";
             KSScraper = new Scrapers.Kshow.Manager(KSShowUrl);
+
+            Run();
         }
 
         public void Run() => TaskHelpers.Retry(Logic, Timeout);
 
         public bool Logic()
         {
-            var showRepo = new ShowRepository(ConnectionString);
-            var showsInDatabase = showRepo.Select();
-            var allShows = new List<Show>();
+            try
+            {
+                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Starting Scraper logic", null));
 
-            GetAllShows(Source.MYASIANTV)?.ForEach(x => allShows.Add(new Show(x)));
-            GetAllShows(Source.ESTRENOSDORAMAS)?.ForEach(x => allShows.Add(new Show(x)));
-            GetAllShows(Source.KSHOW)?.ForEach(x => allShows.Add(new Show(x)));
+                var showRepo = new ShowRepository(ConnectionString);
 
-            var finalList = allShows.Where(x => !showsInDatabase.Exists(y => x.Url == y.Url)).ToList();
-            var distinctAux = finalList
-                .GroupBy(x => x.Url)
-                .Select(x => x.First()).ToList();
+                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, "Getting shows in database", null));
+                var showsInDatabase = showRepo.Select();
+                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {showsInDatabase.Count} shows", null));
 
-            showRepo.BulkCreate(finalList);
+                var allShows = new List<Show>();
+
+                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Getting shows from sources", null));
+
+                GetAllShows(Source.MYASIANTV)?.ForEach(x => allShows.Add(new Show(x)));
+                GetAllShows(Source.ESTRENOSDORAMAS)?.ForEach(x => allShows.Add(new Show(x)));
+                GetAllShows(Source.KSHOW)?.ForEach(x => allShows.Add(new Show(x)));
+
+                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.DEBUG, $"Found {allShows.Count} counts from sources", null));
+
+                var finalList = allShows.Where(x => !showsInDatabase.Exists(y => x.Url == y.Url)).ToList();
+                var distinctAux = finalList
+                    .GroupBy(x => x.Url)
+                    .Select(x => x.First()).ToList();
+
+                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"{distinctAux.Count} shows will be added", null));
+
+                showRepo.BulkCreate(finalList);
+
+                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Shows added successfully", null));
+            }
+            catch (Exception e)
+            {
+                LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, e.Message, e.StackTrace));
+            }
+
+            LogRepository.Create(new Log(Core.Enums.LogHelpers.LogType.INFO, "Finished Scraper logic", null));
 
             return true;
         }
