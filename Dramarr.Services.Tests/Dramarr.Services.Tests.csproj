@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dramarr.Scrapers" Version="1.0.0.9" />
+    <PackageReference Include="Dramarr.Scrapers" Version="1.0.0.11" />
   </ItemGroup>
 
   <ItemGroup>

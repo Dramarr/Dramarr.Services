@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using static Dramarr.Core.Enums.EnumsHelpers;
+using static Dramarr.Core.Enums.EpisodeHelpers;
 using static Dramarr.Core.Enums.SourceHelpers;
 
 namespace Dramarr.Services.Metadata
