@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,13 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dramarr.Scrapers" Version="1.0.0.7" />
+    <PackageReference Include="Dramarr.Scrapers" Version="1.0.0.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Dramarr.Services.Checker\Dramarr.Services.Checker.csproj" />
     <ProjectReference Include="..\Dramarr.Services.Downloader\Dramarr.Services.Downloader.csproj" />
     <ProjectReference Include="..\Dramarr.Services.Enqueuer\Dramarr.Services.Enqueuer.csproj" />
+    <ProjectReference Include="..\Dramarr.Services.Metadata\Dramarr.Services.Metadata.csproj" />
     <ProjectReference Include="..\Dramarr.Services.Scraper\Dramarr.Services.Scraper.csproj" />
   </ItemGroup>
 

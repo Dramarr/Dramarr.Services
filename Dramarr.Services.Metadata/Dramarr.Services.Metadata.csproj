@@ -1,12 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Authors>Emiliano Montesdeoca</Authors>
-    <Description>Scraper for Dramarr</Description>
-    <RepositoryUrl>https://github.com/Dramarr/Dramarr.Scrapers</RepositoryUrl>
-    <Version>1.0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

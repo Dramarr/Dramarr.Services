@@ -9,7 +9,8 @@ namespace Dramarr.Services.Tests
             //EnqueuerTest();
             //ScraperTest();
             //DownloaderTest();
-            CheckerTest();
+            //CheckerTest();
+            MetadataTest();
         }
 
         public static void ScraperTest()
@@ -43,6 +44,14 @@ namespace Dramarr.Services.Tests
             var cs = "Data Source=.; Initial Catalog=Dramarr; User id=sa; Password=sa;";
 
             var enqueuer = new Checker.Job(cs, TimeSpan.FromMinutes(10));
+            enqueuer.Run();
+        }
+
+        public static void MetadataTest()
+        {
+            var cs = "Data Source=.; Initial Catalog=Dramarr; User id=sa; Password=sa;";
+
+            var enqueuer = new Metadata.Job(cs, TimeSpan.FromMinutes(10));
             enqueuer.Run();
         }
     }

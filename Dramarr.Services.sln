@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dramarr.Services.Enqueuer",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dramarr.Services.Scraper", "Dramarr.Services.Scraper\Dramarr.Services.Scraper.csproj", "{29BCCD37-D791-4E5F-A3A5-A73793E36DDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dramarr.Services.Tests", "Dramarr.Services.Tests\Dramarr.Services.Tests.csproj", "{9B7F701F-0938-4CC7-9416-9124E6BFF3C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dramarr.Services.Tests", "Dramarr.Services.Tests\Dramarr.Services.Tests.csproj", "{9B7F701F-0938-4CC7-9416-9124E6BFF3C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dramarr.Services.Metadata", "Dramarr.Services.Metadata\Dramarr.Services.Metadata.csproj", "{95A4DEF1-9087-4DC9-A969-EB5E7627DE20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{9B7F701F-0938-4CC7-9416-9124E6BFF3C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B7F701F-0938-4CC7-9416-9124E6BFF3C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B7F701F-0938-4CC7-9416-9124E6BFF3C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95A4DEF1-9087-4DC9-A969-EB5E7627DE20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95A4DEF1-9087-4DC9-A969-EB5E7627DE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95A4DEF1-9087-4DC9-A969-EB5E7627DE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95A4DEF1-9087-4DC9-A969-EB5E7627DE20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
