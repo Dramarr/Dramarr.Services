@@ -13,14 +13,14 @@ global:
 
 
 before_script:
-    - dotnet restore ./Dramarr.Services.Checker/Dramarr.Services.Checker.csproj
+    - dotnet restore ./Dramarr.Services.Checker/Dramarr.Services.Checker.csproj 
     - dotnet restore ./Dramarr.Services.Downloader/Dramarr.Services.Downloader.csproj
     - dotnet restore ./Dramarr.Services.Enqueuer/Dramarr.Services.Enqueuer.csproj
     - dotnet restore ./Dramarr.Services.Scraper/Dramarr.Services.Scraper.csproj
     
   
 script:
-    - dotnet build ./Dramarr.Services.Checker/Dramarr.Services.Checker.csproj
-    - dotnet build ./Dramarr.Services.Downloader/Dramarr.Services.Downloader.csproj
-    - dotnet build ./Dramarr.Services.Enqueuer/Dramarr.Services.Enqueuer.csproj
-    - dotnet build ./Dramarr.Services.Scraper/Dramarr.Services.Scraper.csproj
+    - dotnet build ./Dramarr.Services.Checker/Dramarr.Services.Checker.csproj --configuration Release
+    - dotnet build ./Dramarr.Services.Downloader/Dramarr.Services.Downloader.csproj --configuration Release
+    - dotnet build ./Dramarr.Services.Enqueuer/Dramarr.Services.Enqueuer.csproj --configuration Release
+    - dotnet build ./Dramarr.Services.Scraper/Dramarr.Services.Scraper.csproj --configuration Release
