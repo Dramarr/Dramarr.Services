@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using static Dramarr.Core.Enums.EnumsHelpers;
+using static Dramarr.Core.Enums.EpisodeHelpers;
 using static Dramarr.Core.Enums.SourceHelpers;
 
 namespace Dramarr.Services.Scraper
@@ -75,7 +75,7 @@ namespace Dramarr.Services.Scraper
 
                 logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"{distinctAux.Count} shows will be added", null));
 
-                showRepo.BulkCreate(finalList);
+                showRepo.Create(finalList);
 
                 logs.Add(new Log(Core.Enums.LogHelpers.LogType.INFO, $"Shows added successfully", null));
             }

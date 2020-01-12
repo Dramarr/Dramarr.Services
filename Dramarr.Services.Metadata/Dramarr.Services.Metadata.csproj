@@ -3,10 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Version>1.0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dramarr.Scrapers" Version="1.0.0.9" />
+    <PackageReference Include="Dramarr.Scrapers" Version="1.0.0.11" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.0" />
   </ItemGroup>
 
